@@ -56,7 +56,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
       </div>
 
       {/* Print-specific styles */}
-      <style jsx>{`
+      <style>{`
         @media print {
           body * {
             visibility: hidden;
