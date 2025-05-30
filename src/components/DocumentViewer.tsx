@@ -80,7 +80,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
           .document-page {
             min-height: 297mm;
             width: 210mm;
-            padding: 15mm;
+            padding: 10mm;
             margin: 0;
             box-shadow: none;
             border: none;
@@ -88,21 +88,21 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
           .fixed-header {
             position: fixed;
             top: 10mm;
-            left: 15mm;
-            right: 15mm;
-            height: 15mm;
+            left: 10mm;
+            right: 10mm;
+            height: 12mm;
           }
           .fixed-footer {
             position: fixed;
             bottom: 10mm;
-            left: 15mm;
-            right: 15mm;
-            height: 12mm;
+            left: 10mm;
+            right: 10mm;
+            height: 10mm;
           }
           .document-content {
-            margin-top: 20mm;
-            margin-bottom: 15mm;
-            min-height: auto;
+            margin-top: 15mm;
+            margin-bottom: 12mm;
+            min-height: calc(297mm - 37mm);
           }
         }
       `}</style>
@@ -111,27 +111,27 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
         {pages.map((page, index) => (
           <div key={page.id} className="relative">
             {/* Document Page Container */}
-            <div className={`document-page min-h-[1050px] p-6 border border-gray-300 shadow-lg bg-white mb-6 relative ${index > 0 ? 'page-break' : ''}`}>
+            <div className={`document-page min-h-[1050px] p-4 border border-gray-300 shadow-lg bg-white mb-6 relative ${index > 0 ? 'page-break' : ''}`}>
               {/* Fixed Header */}
               <div 
-                className="fixed-header pb-3 border-b border-gray-200 mb-4"
+                className="fixed-header pb-2 border-b border-gray-200 mb-3"
                 dangerouslySetInnerHTML={{ __html: processedHeader }}
               />
               
               {/* Page Content */}
               <div 
-                className="document-content min-h-[850px] leading-relaxed"
+                className="document-content min-h-[920px] leading-relaxed flex flex-col justify-start"
                 dangerouslySetInnerHTML={{ __html: page.content }}
               />
               
               {/* Fixed Footer */}
               <div 
-                className="fixed-footer pt-3 border-t border-gray-200 mt-4 absolute bottom-6 left-6 right-6"
+                className="fixed-footer pt-2 border-t border-gray-200 mt-3 absolute bottom-4 left-4 right-4"
                 dangerouslySetInnerHTML={{ __html: processedFooter }}
               />
               
               {/* Page Number */}
-              <div className="absolute bottom-3 right-6 text-xs text-gray-500">
+              <div className="absolute bottom-2 right-4 text-xs text-gray-500">
                 {page.id} / {pages.length}
               </div>
             </div>
