@@ -3,7 +3,8 @@ import React from 'react';
 import { DocumentTemplate, PlaceholderData } from '../types/document';
 import { useDocumentPagination } from '../hooks/useDocumentPagination';
 import PageBreak from './PageBreak';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Printer } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface DocumentViewerProps {
   template: DocumentTemplate;
@@ -17,6 +18,10 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
   className = ''
 }) => {
   const { pages, isLoading } = useDocumentPagination(template, placeholderData);
+
+  const handlePrint = () => {
+    window.print();
+  };
 
   if (isLoading) {
     return (
@@ -39,40 +44,107 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
 
   return (
     <div className={`max-w-4xl mx-auto bg-white ${className}`}>
-      {pages.map((page, index) => (
-        <div key={page.id} className="relative">
-          {/* Document Page Container */}
-          <div className="min-h-[1050px] p-8 border border-gray-300 shadow-lg bg-white mb-6 relative">
-            {/* Fixed Header */}
-            <div 
-              className="fixed-header pb-4 border-b border-gray-200 mb-6"
-              dangerouslySetInnerHTML={{ __html: processedHeader }}
-            />
-            
-            {/* Page Content */}
-            <div 
-              className="document-content min-h-[800px] leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: page.content }}
-            />
-            
-            {/* Fixed Footer */}
-            <div 
-              className="fixed-footer pt-4 border-t border-gray-200 mt-6 absolute bottom-8 left-8 right-8"
-              dangerouslySetInnerHTML={{ __html: processedFooter }}
-            />
-            
-            {/* Page Number */}
-            <div className="absolute bottom-4 right-8 text-xs text-gray-500">
-              {page.id} / {pages.length}
+      {/* Print Button */}
+      <div className="mb-6 flex justify-end print:hidden">
+        <Button
+          onClick={handlePrint}
+          className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg"
+        >
+          <Printer className="w-4 h-4 mr-2" />
+          Imprimir PDF
+        </Button>
+      </div>
+
+      {/* Print-specific styles */}
+      <style jsx>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+          .print-area, .print-area * {
+            visibility: visible;
+          }
+          .print-area {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+          }
+          .page-break {
+            page-break-before: always;
+            break-before: page;
+          }
+          .no-print {
+            display: none !important;
+          }
+          .document-page {
+            min-height: 297mm;
+            width: 210mm;
+            padding: 20mm;
+            margin: 0;
+            box-shadow: none;
+            border: none;
+          }
+          .fixed-header {
+            position: fixed;
+            top: 10mm;
+            left: 20mm;
+            right: 20mm;
+            height: 20mm;
+          }
+          .fixed-footer {
+            position: fixed;
+            bottom: 10mm;
+            left: 20mm;
+            right: 20mm;
+            height: 15mm;
+          }
+          .document-content {
+            margin-top: 25mm;
+            margin-bottom: 20mm;
+            min-height: auto;
+          }
+        }
+      `}</style>
+
+      <div className="print-area">
+        {pages.map((page, index) => (
+          <div key={page.id} className="relative">
+            {/* Document Page Container */}
+            <div className={`document-page min-h-[1050px] p-8 border border-gray-300 shadow-lg bg-white mb-6 relative ${index > 0 ? 'page-break' : ''}`}>
+              {/* Fixed Header */}
+              <div 
+                className="fixed-header pb-4 border-b border-gray-200 mb-6"
+                dangerouslySetInnerHTML={{ __html: processedHeader }}
+              />
+              
+              {/* Page Content */}
+              <div 
+                className="document-content min-h-[800px] leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: page.content }}
+              />
+              
+              {/* Fixed Footer */}
+              <div 
+                className="fixed-footer pt-4 border-t border-gray-200 mt-6 absolute bottom-8 left-8 right-8"
+                dangerouslySetInnerHTML={{ __html: processedFooter }}
+              />
+              
+              {/* Page Number */}
+              <div className="absolute bottom-4 right-8 text-xs text-gray-500">
+                {page.id} / {pages.length}
+              </div>
             </div>
+            
+            {/* Page Break (except for last page) */}
+            {index < pages.length - 1 && (
+              <div className="no-print">
+                <PageBreak pageNumber={page.id} totalPages={pages.length} />
+              </div>
+            )}
           </div>
-          
-          {/* Page Break (except for last page) */}
-          {index < pages.length - 1 && (
-            <PageBreak pageNumber={page.id} totalPages={pages.length} />
-          )}
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };
