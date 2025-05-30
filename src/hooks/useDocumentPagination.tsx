@@ -6,7 +6,7 @@ import { replacePlaceholders, splitContentIntoPages } from '../utils/documentUti
 export const useDocumentPagination = (
   template: DocumentTemplate,
   placeholderData: PlaceholderData,
-  pageHeight: number = 800
+  pageHeight: number = 950
 ) => {
   const [pages, setPages] = useState<DocumentPage[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,8 +20,8 @@ export const useDocumentPagination = (
       const processedContent = replacePlaceholders(template.content, placeholderData);
       const processedFooter = replacePlaceholders(template.footer, placeholderData);
       
-      // Split content into pages (reserve space for header and footer)
-      const availableContentHeight = pageHeight - 120; // Reserve 60px each for header and footer
+      // Split content into pages (reserve less space for header and footer)
+      const availableContentHeight = pageHeight - 80; // Reduced reserved space
       const contentPages = splitContentIntoPages(processedContent, availableContentHeight);
       
       // Create page objects
