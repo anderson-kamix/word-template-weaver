@@ -87,21 +87,21 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
           }
           .fixed-header {
             position: fixed;
-            top: 15mm;
+            top: 12mm;
             left: 15mm;
             right: 15mm;
-            height: 12mm;
+            height: 15mm;
           }
           .fixed-footer {
             position: fixed;
-            bottom: 15mm;
+            bottom: 8mm;
             left: 15mm;
             right: 15mm;
-            height: 10mm;
+            height: 8mm;
           }
           .document-content {
-            margin-top: 15mm;
-            margin-bottom: 12mm;
+            margin-top: 20mm;
+            margin-bottom: 8mm;
             min-height: auto;
           }
         }
@@ -114,24 +114,24 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
             <div className={`document-page min-h-[1200px] p-8 border border-gray-300 shadow-lg bg-white mb-6 relative ${index > 0 ? 'page-break' : ''}`}>
               {/* Fixed Header */}
               <div 
-                className="fixed-header pb-2 border-b border-gray-200 mb-3"
+                className="fixed-header pb-3 border-b border-gray-200 mb-5"
                 dangerouslySetInnerHTML={{ __html: processedHeader }}
               />
               
               {/* Page Content */}
               <div 
-                className="document-content min-h-[1000px] leading-relaxed text-justify"
+                className="document-content min-h-[1050px] leading-relaxed text-justify"
                 dangerouslySetInnerHTML={{ __html: page.content }}
               />
               
               {/* Fixed Footer */}
               <div 
-                className="fixed-footer pt-2 border-t border-gray-200 mt-3 absolute bottom-8 left-8 right-8"
+                className="fixed-footer pt-2 border-t border-gray-200 mt-2 absolute bottom-6 left-8 right-8"
                 dangerouslySetInnerHTML={{ __html: processedFooter }}
               />
               
               {/* Page Number */}
-              <div className="absolute bottom-4 right-8 text-xs text-gray-500">
+              <div className="absolute bottom-2 right-8 text-xs text-gray-500">
                 {page.id} / {pages.length}
               </div>
             </div>
