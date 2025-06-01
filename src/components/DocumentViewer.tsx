@@ -17,7 +17,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
   placeholderData,
   className = ''
 }) => {
-  const { pages, isLoading } = useDocumentPagination(template, placeholderData, 950); // Increased page height
+  const { pages, isLoading } = useDocumentPagination(template, placeholderData, 1100); // Increased page height
 
   const handlePrint = () => {
     window.print();
@@ -80,29 +80,29 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
           .document-page {
             min-height: 297mm;
             width: 210mm;
-            padding: 20mm 15mm;
+            padding: 0;
             margin: 0;
             box-shadow: none;
             border: none;
+            display: flex;
+            flex-direction: column;
           }
           .fixed-header {
-            position: fixed;
-            top: 12mm;
-            left: 15mm;
-            right: 15mm;
-            height: 15mm;
+            padding: 12mm 15mm;
+            border-bottom: 1px solid #e5e7eb;
+            flex-shrink: 0;
           }
           .fixed-footer {
-            position: fixed;
-            bottom: 8mm;
-            left: 15mm;
-            right: 15mm;
-            height: 8mm;
+            padding: 8mm 15mm;
+            border-top: 1px solid #e5e7eb;
+            flex-shrink: 0;
           }
           .document-content {
-            margin-top: 20mm;
-            margin-bottom: 8mm;
-            min-height: auto;
+            flex: 1;
+            padding: 0 15mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
           }
         }
       `}</style>
@@ -111,27 +111,27 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
         {pages.map((page, index) => (
           <div key={page.id} className="relative">
             {/* Document Page Container */}
-            <div className={`document-page min-h-[1200px] p-8 border border-gray-300 shadow-lg bg-white mb-6 relative ${index > 0 ? 'page-break' : ''}`}>
+            <div className={`document-page min-h-[1200px] border border-gray-300 shadow-lg bg-white mb-6 relative flex flex-col ${index > 0 ? 'page-break' : ''}`}>
               {/* Fixed Header */}
               <div 
-                className="fixed-header pb-3 border-b border-gray-200 mb-5"
+                className="fixed-header p-6 border-b border-gray-200 flex-shrink-0"
                 dangerouslySetInnerHTML={{ __html: processedHeader }}
               />
               
-              {/* Page Content */}
+              {/* Page Content - Takes all available space */}
               <div 
-                className="document-content min-h-[1050px] leading-relaxed text-justify"
+                className="document-content flex-1 px-6 py-4 leading-relaxed text-justify overflow-hidden"
                 dangerouslySetInnerHTML={{ __html: page.content }}
               />
               
               {/* Fixed Footer */}
               <div 
-                className="fixed-footer pt-2 border-t border-gray-200 mt-2 absolute bottom-6 left-8 right-8"
+                className="fixed-footer p-6 border-t border-gray-200 flex-shrink-0"
                 dangerouslySetInnerHTML={{ __html: processedFooter }}
               />
               
               {/* Page Number */}
-              <div className="absolute bottom-2 right-8 text-xs text-gray-500">
+              <div className="absolute bottom-2 right-6 text-xs text-gray-500">
                 {page.id} / {pages.length}
               </div>
             </div>
