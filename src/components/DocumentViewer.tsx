@@ -89,12 +89,10 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
           }
           .fixed-header {
             padding: 12mm 15mm;
-            border-bottom: 1px solid #e5e7eb;
             flex-shrink: 0;
           }
           .fixed-footer {
             padding: 8mm 15mm;
-            border-top: 1px solid #e5e7eb;
             flex-shrink: 0;
           }
           .document-content {
@@ -114,7 +112,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
             <div className={`document-page min-h-[1200px] border border-gray-300 shadow-lg bg-white mb-6 relative flex flex-col ${index > 0 ? 'page-break' : ''}`}>
               {/* Fixed Header */}
               <div 
-                className="fixed-header p-6 border-b border-gray-200 flex-shrink-0"
+                className="fixed-header p-6 flex-shrink-0"
                 dangerouslySetInnerHTML={{ __html: processedHeader }}
               />
               
@@ -126,7 +124,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({
               
               {/* Fixed Footer */}
               <div 
-                className="fixed-footer p-6 border-t border-gray-200 flex-shrink-0"
+                className="fixed-footer p-6 flex-shrink-0"
                 dangerouslySetInnerHTML={{ __html: processedFooter }}
               />
               
